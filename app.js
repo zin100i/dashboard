@@ -67,7 +67,6 @@ if (BACKGROUNDS.length > 0) {
 // ── 시계 ──────────────────────────────────────────────
 const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
-// ── 시계 ──────────────────────────────────────────────
 function updateClock() {
   const now = new Date();
   const h  = String(now.getHours()).padStart(2, '0');
@@ -135,7 +134,7 @@ async function fetchWeather() {
     if (data.error) { console.warn('[weather]', data.error); return; }
 
     const nowH  = new Date().getHours();
-    const plus2H = data.forecast2h.hour ?? (nowH + 2) % 24;
+    const plus2H = (data.forecast2h.hour != null) ? data.forecast2h.hour : (nowH + 2) % 24;
 
     // 2시간 후 라벨
     document.getElementById('label-2h').textContent =
