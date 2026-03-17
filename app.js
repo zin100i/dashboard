@@ -1,5 +1,70 @@
 'use strict';
 
+// ── 배경 이미지 목록 ──────────────────────────────────
+// images/ 폴더에 파일 추가 후 여기에 파일명만 넣으면 됩니다
+const BACKGROUNDS = [
+  'images/bg1.jpg',
+  'images/bg2.jpg',
+  'images/bg3.jpg',
+  'images/bg4.jpg',
+  'images/bg5.jpg',
+  'images/bg6.jpg',
+  'images/bg7.jpg',
+  'images/bg8.jpg',
+  'images/bg9.jpg',
+  'images/bg10.jpg',
+  'images/bg11.jpg',
+  'images/bg12.jpg',
+];
+const BG_INTERVAL_MS = 2 * 60 * 1000;  // 2분
+
+let bgCurrentLayer = 'a';  // 현재 보이는 레이어
+let bgLastIndex = -1;
+
+function pickRandomIndex() {
+  if (BACKGROUNDS.length === 1) return 0;
+  let idx;
+  do { idx = Math.floor(Math.random() * BACKGROUNDS.length); }
+  while (idx === bgLastIndex);
+  return idx;
+}
+
+function rotateBg() {
+  const idx = pickRandomIndex();
+  bgLastIndex = idx;
+  const url = `url('${BACKGROUNDS[idx]}')`;
+
+  if (bgCurrentLayer === 'a') {
+    // b에 새 이미지 로드 후 페이드인, a 페이드아웃
+    const b = document.getElementById('bg-b');
+    b.style.backgroundImage = url;
+    b.style.opacity = '1';
+    document.getElementById('bg-a').style.opacity = '0';
+    bgCurrentLayer = 'b';
+  } else {
+    const a = document.getElementById('bg-a');
+    a.style.backgroundImage = url;
+    a.style.opacity = '1';
+    document.getElementById('bg-b').style.opacity = '0';
+    bgCurrentLayer = 'a';
+  }
+}
+
+// 배경 시작 및 주기적 교체
+if (BACKGROUNDS.length > 0) {
+  // 초기 이미지 즉시 표시 (페이드 없이)
+  const idx = pickRandomIndex();
+  bgLastIndex = idx;
+  const bgA = document.getElementById('bg-a');
+  bgA.style.backgroundImage = `url('${BACKGROUNDS[idx]}')`;
+  bgA.style.opacity = '1';
+
+  if (BACKGROUNDS.length > 1) {
+    setInterval(rotateBg, BG_INTERVAL_MS);
+  }
+}
+
+// ── 시계 ──────────────────────────────────────────────
 const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
 // ── 시계 ──────────────────────────────────────────────
