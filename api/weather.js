@@ -12,7 +12,9 @@ const NY = 121;
 
 // ── 기상청 발표 시각 계산 ─────────────────────────────
 function getBaseDateTime() {
-  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+  const now = new Date(
+    new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' })
+  );
   const baseHours = [2, 5, 8, 11, 14, 17, 20, 23];
 
   for (let i = baseHours.length - 1; i >= 0; i--) {
@@ -33,14 +35,10 @@ function getBaseDateTime() {
 }
 
 function toDateStr(d) {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const y  = d.getFullYear();
+  const m  = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
   return `${y}${m}${day}`;
-}
-
-function toTimeStr(h) {
-  return String(((h % 24) + 24) % 24).padStart(2, '0') + '00';
 }
 
 // ── 예보 파싱 ─────────────────────────────────────────
@@ -48,7 +46,7 @@ function parseForecast(items) {
   const map = {};
   for (const item of items) {
     const key = `${item.fcstDate}_${item.fcstTime}`;
-    map[key] = map[key] || { date: item.fcstDate, time: item.fcstTime };
+    if (!map[key]) map[key] = { date: item.fcstDate, time: item.fcstTime };
     map[key][item.category] = item.fcstValue;
   }
   return map;
@@ -57,7 +55,7 @@ function parseForecast(items) {
 function closestSlot(map, targetDate, targetHour) {
   const slots = Object.values(map).filter(v => v.date === targetDate);
   if (!slots.length) return {};
-  const target = targetHour * 60;
+  const target = ((targetHour % 24) + 24) % 24 * 60;
   slots.sort((a, b) => {
     const ah = parseInt(a.time.slice(0, 2)) * 60;
     const bh = parseInt(b.time.slice(0, 2)) * 60;
@@ -77,7 +75,7 @@ function dailyExtremes(map, dateStr) {
 }
 
 // ── 핸들러 ────────────────────────────────────────────
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   const API_KEY = process.env.KMA_API_KEY;
@@ -108,7 +106,9 @@ export default async function handler(req, res) {
 
     const map = parseForecast(items);
 
-    const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+    const now = new Date(
+      new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' })
+    );
     const todayStr    = toDateStr(now);
     const tomorrowStr = toDateStr(new Date(now.getTime() + 86400000));
     const nowH        = now.getHours();
@@ -147,4 +147,4 @@ export default async function handler(req, res) {
   } catch (e) {
     return res.status(502).json({ error: e.message });
   }
-}
+};
