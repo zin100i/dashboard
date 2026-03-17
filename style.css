@@ -1,0 +1,143 @@
+/* ────────────────────────────────────────
+   수원 날씨 대시보드 — 3.5인치 (480×320)
+──────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 480px;
+  height: 320px;
+  overflow: hidden;
+  background: #0d1117;
+}
+
+body {
+  font-family: 'Noto Sans KR', 'Segoe UI', sans-serif;
+  color: #ffffff;
+  /* 배경 이미지: bg.jpg 파일을 교체하세요 */
+  background-image: url('bg.jpg');
+  background-size: cover;
+  background-position: center center;
+}
+
+/* 반투명 오버레이 */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.50);
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  width: 480px;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 시계 영역 ── */
+.clock-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 4px;
+}
+
+.time {
+  font-size: 80px;
+  font-weight: 300;
+  letter-spacing: 6px;
+  line-height: 1;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.6);
+  font-variant-numeric: tabular-nums;
+}
+
+.date {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.70);
+}
+
+/* ── 날씨 영역 ── */
+.weather-section {
+  display: flex;
+  align-items: center;
+  height: 112px;
+  background: rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.weather-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 6px 4px;
+}
+
+.divider {
+  width: 1px;
+  height: 72px;
+  background: rgba(255, 255, 255, 0.18);
+  flex-shrink: 0;
+}
+
+.card-label {
+  font-size: 10px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.weather-icon {
+  font-size: 30px;
+  line-height: 1.1;
+  color: #ffd060;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+.temp {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.desc {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.minmax {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.50);
+  letter-spacing: 0.5px;
+}
+
+/* ── 날씨 아이콘 색상 ── */
+.wi-day-sunny                         { color: #ffd060; }
+.wi-night-clear                       { color: #c8d8ff; }
+.wi-day-cloudy                        { color: #c8d0d8; }
+.wi-night-cloudy                      { color: #8898aa; }
+.wi-cloudy                            { color: #9aaabb; }
+.wi-rain                              { color: #60b0ff; }
+.wi-day-showers, .wi-night-showers    { color: #60c8ff; }
+.wi-rain-mix                          { color: #a0c8ff; }
+.wi-snow                              { color: #ddeeff; }

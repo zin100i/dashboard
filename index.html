@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=480, initial-scale=1.0">
+  <title>수원 날씨 대시보드</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.10/css/weather-icons.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <div class="container">
+
+    <!-- 시계 -->
+    <div class="clock-section">
+      <div class="time" id="time">--:--:--</div>
+      <div class="date" id="date">----년 --월 --일 (-)</div>
+    </div>
+
+    <!-- 날씨 -->
+    <div class="weather-section">
+
+      <div class="weather-card">
+        <div class="card-label">오늘</div>
+        <i class="wi wi-day-sunny weather-icon" id="icon-today"></i>
+        <div class="temp" id="temp-today">--°</div>
+        <div class="desc" id="desc-today">--</div>
+        <div class="minmax" id="minmax-today">↓--° ↑--°</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="weather-card">
+        <div class="card-label" id="label-2h">2시간 후</div>
+        <i class="wi wi-cloudy weather-icon" id="icon-2h"></i>
+        <div class="temp" id="temp-2h">--°</div>
+        <div class="desc" id="desc-2h">--</div>
+        <div class="minmax" style="visibility:hidden">　</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="weather-card">
+        <div class="card-label">내일</div>
+        <i class="wi wi-day-cloudy weather-icon" id="icon-tomorrow"></i>
+        <div class="temp" id="temp-tomorrow">--°</div>
+        <div class="desc" id="desc-tomorrow">--</div>
+        <div class="minmax" id="minmax-tomorrow">↓--° ↑--°</div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

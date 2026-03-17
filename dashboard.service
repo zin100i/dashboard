@@ -1,0 +1,20 @@
+# /etc/systemd/system/dashboard.service
+# 설치: sudo cp dashboard.service /etc/systemd/system/
+#        sudo systemctl enable dashboard
+#        sudo systemctl start dashboard
+
+[Unit]
+Description=Weather Clock Dashboard
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/dashboard
+ExecStart=/usr/bin/python3 /home/pi/dashboard/server.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
