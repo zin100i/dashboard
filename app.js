@@ -1,41 +1,28 @@
 'use strict';
 
-// ── 배경 이미지 목록 ──────────────────────────────────
-// images/ 폴더에 파일 추가 후 여기에 파일명만 넣으면 됩니다
-const BACKGROUNDS = [
-  'images/bg1.jpg',
-  'images/bg2.jpg',
-  'images/bg3.jpg',
-  'images/bg4.jpg',
-  'images/bg5.jpg',
-  'images/bg6.jpg',
-  'images/bg7.jpg',
-  'images/bg8.jpg',
-  'images/bg9.jpg',
-  'images/bg10.jpg',
-  'images/bg11.jpg',
-  'images/bg12.jpg',
-];
+// ── 배경 이미지 ───────────────────────────────────────
+// images/bg숫자.jpg 파일을 폴더에 넣으면 자동으로 인식됩니다
 const BG_INTERVAL_MS = 2 * 60 * 1000;  // 2분
 
-let bgCurrentLayer = 'a';  // 현재 보이는 레이어
+let backgrounds = [];
+let bgCurrentLayer = 'a';
 let bgLastIndex = -1;
 
 function pickRandomIndex() {
-  if (BACKGROUNDS.length === 1) return 0;
+  if (backgrounds.length === 1) return 0;
   let idx;
-  do { idx = Math.floor(Math.random() * BACKGROUNDS.length); }
+  do { idx = Math.floor(Math.random() * backgrounds.length); }
   while (idx === bgLastIndex);
   return idx;
 }
 
 function rotateBg() {
+  if (backgrounds.length === 0) return;
   const idx = pickRandomIndex();
   bgLastIndex = idx;
-  const url = `url('${BACKGROUNDS[idx]}')`;
+  const url = "url('" + backgrounds[idx] + "')";
 
   if (bgCurrentLayer === 'a') {
-    // b에 새 이미지 로드 후 페이드인, a 페이드아웃
     const b = document.getElementById('bg-b');
     b.style.backgroundImage = url;
     b.style.opacity = '1';
@@ -50,19 +37,26 @@ function rotateBg() {
   }
 }
 
-// 배경 시작 및 주기적 교체
-if (BACKGROUNDS.length > 0) {
-  // 초기 이미지 즉시 표시 (페이드 없이)
+function initBg() {
+  if (backgrounds.length === 0) return;
   const idx = pickRandomIndex();
   bgLastIndex = idx;
   const bgA = document.getElementById('bg-a');
-  bgA.style.backgroundImage = `url('${BACKGROUNDS[idx]}')`;
+  bgA.style.backgroundImage = "url('" + backgrounds[idx] + "')";
   bgA.style.opacity = '1';
-
-  if (BACKGROUNDS.length > 1) {
+  if (backgrounds.length > 1) {
     setInterval(rotateBg, BG_INTERVAL_MS);
   }
 }
+
+// /api/images 에서 파일 목록 자동 로드
+fetch('/api/images')
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    backgrounds = data.images || [];
+    initBg();
+  })
+  .catch(function(e) { console.warn('배경 이미지 로드 실패:', e.message); });
 
 // ── 시계 ──────────────────────────────────────────────
 const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
